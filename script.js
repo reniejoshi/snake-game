@@ -10,14 +10,18 @@ const boardBackground = "white";
 const snakeColor = "lightgreen";
 const snakeBorder = "black";
 const foodColor = "red";
+const challengeFoodColor = "gray";
 const unitSize = 25;
 const eatAudio = document.getElementById('eatAudio');
 const gameOverAudio = document.getElementById('gameOverAudio');
+let speed;
 let running = false; //running will be examined to see if game is currently running
 let xVelocity = unitSize; //if xVelocity is positive, snake moves to right; if negative, snake moves to left
 let yVelocity = 0;
 let foodX;
 let foodY;
+let challengeFoodX;
+let challengeFoodY;
 let score = 0;
 let snake = [ //each object is one body part of snake
     {x: unitSize * 4, y: unitSize},
@@ -34,6 +38,7 @@ gameStart();
 
 function gameStart() {
     running = true;
+    speed = 150;
     scoreText.textContent = score;
     createFood();
     drawFood();
@@ -48,7 +53,7 @@ function nextTick() {
             drawSnake();
             checkGameOver();
             nextTick();
-        }, 75);
+        }, speed);
     }
     else {
         displayGameOver();
@@ -84,6 +89,9 @@ function moveSnake() {
     if(snake[0].x === foodX && snake[0].y === foodY) {
         eatAudio.play();
         score += 1;
+        if(score % 10 === 0) {
+            speed -= 50;
+        }
         scoreText.textContent = score;
         createFood();
     }
