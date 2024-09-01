@@ -40,7 +40,7 @@ function gameStart() {
     running = true;
     speed = 150;
     scoreText.textContent = score;
-    createFood();
+    randomFood();
     drawFood();
     nextTick();
 }
@@ -63,7 +63,7 @@ function clearBoard() {
     ctx.fillStyle = boardBackground;
     ctx.fillRect(0, 0, gameWidth, gameHeight);
 }
-function createFood() {
+function randomFood() {
     function randomFood(min, max) {
         const randNum = Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize;
         return randNum;
@@ -89,11 +89,15 @@ function moveSnake() {
     if(snake[0].x === foodX && snake[0].y === foodY) {
         eatAudio.play();
         score += 1;
-        if(score % 10 === 0) {
-            speed -= 50;
+        if(score % 5 === 0) {
+            speed -= 10;
+            //still need to fix 15 Aug. 2024
+            ctx.font = "30px Arial"; //find better font
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
         }
         scoreText.textContent = score;
-        createFood();
+        randomFood();
     }
     else {
         snake.pop();
